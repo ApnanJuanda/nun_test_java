@@ -5,8 +5,13 @@ import com.nun.assessment.model.PenjualanItem;
 import com.nun.assessment.model.PenjualanItemRequest;
 import com.nun.assessment.model.PenjualanRequest;
 import com.nun.assessment.model.PenjualanResponse;
+import com.nun.assessment.model.PriceAfterDiscountRequest;
+import com.nun.assessment.model.PriceAfterDiscountResponse;
+import com.nun.assessment.model.TotalPriceRequest;
+import com.nun.assessment.model.TotalPriceResponse;
 import com.nun.assessment.service.PenjualanService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/order")
+@RequestMapping("/api/penjualan")
 public class PenjualanController {
 
     private final PenjualanService penjualanService;
@@ -53,6 +58,30 @@ public class PenjualanController {
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             PenjualanResponse response = new PenjualanResponse("Error: " + e.getMessage());
+            return ResponseEntity.status(500).body(response);
+        }
+    }
+
+    @GetMapping("/price-detail")
+    public ResponseEntity<TotalPriceResponse> getTotalPriceDetail(@RequestBody TotalPriceRequest request) {
+        try {
+            TotalPriceResponse response = penjualanService.getTotalPriceDetail(request);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            TotalPriceResponse response = new TotalPriceResponse();
+            response.setMessage("Error: " + e.getMessage());
+            return ResponseEntity.status(500).body(response);
+        }
+    }
+
+    @PostMapping("/price-discount")
+    public ResponseEntity<PriceAfterDiscountResponse> calculatePriceAfterDiscount(@RequestBody PriceAfterDiscountRequest request) {
+        try {
+            PriceAfterDiscountResponse response = penjualanService.calculatePriceAfterDiscount(request);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            PriceAfterDiscountResponse response = new PriceAfterDiscountResponse();
+            response.setMessage("Error: " + e.getMessage());
             return ResponseEntity.status(500).body(response);
         }
     }

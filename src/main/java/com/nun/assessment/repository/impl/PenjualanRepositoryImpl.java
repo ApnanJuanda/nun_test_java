@@ -7,8 +7,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Repository
 public class PenjualanRepositoryImpl implements PenjualanRepository {
     private final JdbcTemplate jdbcTemplate;
